@@ -4,7 +4,7 @@ import tensorflow as tf
 #from tensorflow.keras.applications.densenet import DenseNet121, preprocess_input
 #from tensorflow.keras.applications.resnet import ResNet50, preprocess_input
 from tensorflow.keras.applications.efficientnet_v2 import EfficientNetV2M, preprocess_input
-
+from params import opts
 
 
 
@@ -17,10 +17,9 @@ import cv2
 from metric import *
 from tqdm import tqdm
 
-size = 32
-top_n = 5
-# Load the dataset
-data = np.load('../dataset/28/breastmnist.npz')
+size = opts['resize']
+top_n = opts['top_k']
+data = np.load(opts['data_path'])
 
 train_images = data['train_images']
 train_labels = data['train_labels']
@@ -65,10 +64,7 @@ for i in tqdm(range(len(test_features))):
         distance = np.linalg.norm(query_features - train_features[idx])
         retrieved.append((distance, idx))
     results = sorted(retrieved)[0:top_n]
-    #results = np.array(results)
 
-    #labels_ret = [labels_train[r[1]] for r in results]
-    #label_true = dataset_test[i].split("/")[3]  ##############################
 
     labels_ret =  [train_labels[r[1]] for r in results]
 
