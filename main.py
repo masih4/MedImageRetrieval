@@ -1,9 +1,6 @@
 import numpy as np
 import tensorflow as tf
 from params import opts
-
-
-
 from tensorflow.keras.preprocessing.image import img_to_array, array_to_img
 from tensorflow.keras.models import Model
 from sklearn.metrics.pairwise import cosine_similarity
@@ -22,21 +19,11 @@ train_labels = data['train_labels']
 test_images = data['test_images']
 test_labels = data['test_labels']
 
-#just test for github update
-
-
-# Resize images
-train_images_resized = np.array([cv2.resize(img, (size, size)) for img in train_images])
-test_images_resized = np.array([cv2.resize(img, (size, size)) for img in test_images])
-
 
 
 def convert_to_rgb(images):
     return np.stack([images, images, images], axis=-1)
 
-if len(train_images_resized.shape) == 3:
-    train_images_rgb = convert_to_rgb(train_images_resized)
-    test_images_rgb = convert_to_rgb(test_images_resized)
 
 
 print('number of classes:', len(np.unique(train_labels)))
@@ -59,9 +46,21 @@ elif opts['pretrained_network_name'] == 'ResNet50':
     model = ResNet50(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
 
+# Resize images
+train_images_resized = np.array([cv2.resize(img, (size, size)) for img in train_images])
+test_images_resized = np.array([cv2.resize(img, (size, size)) for img in test_images])
+
+if len(train_images_resized.shape) == 3:
+    train_images_rgb = convert_to_rgb(train_images_resized)
+    test_images_rgb = convert_to_rgb(test_images_resized)
+
 # Normalize images
-train_images_resized = preprocess_input(train_images_resized)
-test_images_resized = preprocess_input(test_images_resized)
+train_images_rgb = preprocess_input(train_images_rgb)
+test_images_rgb = preprocess_input(test_images_rgb )
+
+
+
+
 
 # Extract features
 train_features = model.predict(train_images_rgb, batch_size=8)
