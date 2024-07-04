@@ -27,6 +27,8 @@ train_labels = data['train_labels']
 test_images = data['test_images']
 test_labels = data['test_labels']
 
+#just test for github update
+
 
 # Resize images
 train_images_resized = np.array([cv2.resize(img, (size, size)) for img in train_images])
