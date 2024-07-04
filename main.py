@@ -1,9 +1,5 @@
 import numpy as np
 import tensorflow as tf
-#from tensorflow.keras.applications.vgg19 import VGG19, preprocess_input
-#from tensorflow.keras.applications.densenet import DenseNet121, preprocess_input
-#from tensorflow.keras.applications.resnet import ResNet50, preprocess_input
-from tensorflow.keras.applications.efficientnet_v2 import EfficientNetV2M, preprocess_input
 from params import opts
 
 
@@ -33,9 +29,7 @@ test_labels = data['test_labels']
 train_images_resized = np.array([cv2.resize(img, (size, size)) for img in train_images])
 test_images_resized = np.array([cv2.resize(img, (size, size)) for img in test_images])
 
-# Normalize images
-train_images_resized = preprocess_input(train_images_resized)
-test_images_resized = preprocess_input(test_images_resized)
+
 
 def convert_to_rgb(images):
     return np.stack([images, images, images], axis=-1)
@@ -47,8 +41,27 @@ if len(train_images_resized.shape) == 3:
 
 print('number of classes:', len(np.unique(train_labels)))
 
-model = EfficientNetV2M(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
+if opts['pretrained_network_name'] == 'EfficientNetV2M':
+    from tensorflow.keras.applications.efficientnet_v2 import EfficientNetV2M, preprocess_input
+    model = EfficientNetV2M(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
+
+elif opts['pretrained_network_name'] == 'VGG19':
+    from tensorflow.keras.applications.vgg19 import VGG19, preprocess_input
+    model = VGG19(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
+
+elif opts['pretrained_network_name'] == 'DenseNet121':
+    from tensorflow.keras.applications.densenet import DenseNet121, preprocess_input
+    model = DenseNet121(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
+
+elif opts['pretrained_network_name'] == 'ResNet50':
+    from tensorflow.keras.applications.resnet import ResNet50, preprocess_input
+    model = ResNet50(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
+
+
+# Normalize images
+train_images_resized = preprocess_input(train_images_resized)
+test_images_resized = preprocess_input(test_images_resized)
 
 # Extract features
 train_features = model.predict(train_images_rgb, batch_size=8)
