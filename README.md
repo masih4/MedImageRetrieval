@@ -5,6 +5,7 @@ Medical image retrieval using SOAT feature extractor
 ## Feature extractors:
 - VGG19
 - ResNet50
+- DenseNet121
 - EfficientNetV2N
 - CCL
 - SAM
@@ -15,9 +16,12 @@ Medical image retrieval using SOAT feature extractor
 Cosine similarity index
 
 ## Evaluation:
-- mAP (5)
-- HitRate
-- nMV (5)
+- mAP@5
+- HitRate@5
+- MMV@5
+- ACC@1
+- ACC@3
+- ACC@5 ( = HitRate@5)
 
 
 ## Contact:
