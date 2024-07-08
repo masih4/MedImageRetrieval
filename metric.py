@@ -92,8 +92,14 @@ def hit_rate_k(actual, predicted, k=10):
     hits = any(predicted[i] in actual for i in range(k))
     return 1 if hits else 0
 
+def acc_k(actual, predicted, acc_topk = 5):
+    top_k_predictions = predicted[:acc_topk]
 
-def mMV_k(actual, predicted, k=10):
+    hits = any(top_k_predictions[i] in actual for i in range(acc_topk))
+    return 1 if hits else 0
+
+
+def mMV_k_old(actual, predicted, k=10):
     """
     # Fast and Scalable Image Search For Histology
     # the mean majority vote == mMV_k
@@ -107,7 +113,6 @@ def mMV_k(actual, predicted, k=10):
     # for pred in predicted:
     top_k_predictions = predicted[:k]
     top_k_predictions_numbers = [int(pred[0]) for pred in top_k_predictions]
-
     vote_count = Counter(top_k_predictions_numbers)
     majority_vote = vote_count.most_common(1)[0][0]
     #     mmv_results.append(majority_vote)
@@ -115,5 +120,24 @@ def mMV_k(actual, predicted, k=10):
     # most_common_word = word_counts.most_common(1)[0][1]
     # return most_common_word/len(predicted)
     return 1 if majority_vote in actual else 0
+
+
+def mMV_k(actual, predicted, k=10):
+    top_k_predictions = predicted[:k]
+    top_k_predictions_numbers = [int(pred[0]) for pred in top_k_predictions]
+    vote_count = Counter(top_k_predictions_numbers)
+    max_votes = max(vote_count.values())
+    tied_majorities = [prediction for prediction, votes in vote_count.items() if votes == max_votes]
+    for majority_vote in tied_majorities:
+        if majority_vote in actual:
+            return 1
+    return 0
+
+#actual, predicted = ['3'], ['1','2','5','3','1']
+# #actual, predicted = ['w'], ['w','jj','ss','eee','w']
+#
+# print(mMV_k(actual, predicted, k=5))
+# print(mMV_k_old(actual, predicted, k=5))
+#print(acc_k(actual, predicted, acc_topk=3))
 
 

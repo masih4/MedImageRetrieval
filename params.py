@@ -1,9 +1,9 @@
 # set all hyper parameters
 opts = {}
-opts['resize'] = 32
+opts['resize'] = 224
 opts['top_k'] = 5
-opts['data_path'] = '../dataset/28/breastmnist.npz'
-opts['pretrained_network_name'] = 'DenseNet121'
+opts['data_path'] = '../dataset/224/bloodmnist.npz'
+opts['pretrained_network_name'] = 'VGG19'
 # 'VGG19'
 # 'ResNet50'
 # 'DenseNet121'
