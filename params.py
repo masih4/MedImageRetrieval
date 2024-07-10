@@ -1,8 +1,8 @@
 # set all hyper parameters
 opts = {}
-opts['resize'] = 32
+opts['resize'] = 224
 opts['top_k'] = 5
-opts['data_path'] = '../dataset/28/pathmnist.npz'
+opts['data_path'] = '../dataset/224/pathmnist_224.npz'
 opts['pretrained_network_name'] = 'VGG19'
 # 'VGG19'
 # 'ResNet50'

@@ -12,6 +12,10 @@ from tqdm import tqdm
 import gc
 import glob
 import os
+from natsort import natsorted
+import time
+
+start_time = time.time()
 
 size = opts['resize']
 top_n = opts['top_k']
@@ -61,8 +65,13 @@ elif opts['pretrained_network_name'] == 'ResNet50':
 train_files = glob.glob(os.path.join(opts['save_train_hard'], file_pattern))
 test_files = glob.glob(os.path.join(opts['save_test_hard'], file_pattern))
 
-train_files.sort()
-test_files.sort()
+# this is NOT sorting correctly!
+# train_files.sort()
+# test_files.sort()
+
+train_files = natsorted(train_files)
+test_files = natsorted(test_files)
+
 
 train_features, test_features = [], []
 
@@ -129,6 +138,9 @@ mean_acc_1_list = np.mean(acc_1_list)
 mean_acc_3_list = np.mean(acc_3_list)
 mean_acc_5_list = np.mean(acc_5_list)
 
+end_time = time.time()
+runtime_seconds = end_time - start_time
+runtime_minutes = runtime_seconds / 60
 
 print(f"mean_ap_k_list: {mean_ap_k_list} \n"
       f"mean_hit_rate_k_list: {mean_hit_rate_k_list} \n"
@@ -136,6 +148,7 @@ print(f"mean_ap_k_list: {mean_ap_k_list} \n"
       f" mean ACC@1: {mean_acc_1_list} \n"
       f" mean ACC@3: {mean_acc_3_list} \n"
       f" mean ACC@5: {mean_acc_5_list} \n"
+      f"Runtime: {runtime_minutes:.2f} minutes"
       )
 
 
