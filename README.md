@@ -1,5 +1,5 @@
 # MedImageRetrieval
-Medical image retrieval using SOAT feature extractor
+Evaluating Pre-trained Convolutional Neural Networks and Foundation Models as Feature Extractors for Content-based Medical Image Retrieval
 ## Dataset: a subset of MedMNIST V2 
 ![Project Image](https://github.com/masih4/MedImageRetrieval/blob/master/Untitled.png)
 ## Feature extractors:
