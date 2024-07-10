@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 import cv2
 from metric import *
 from tqdm import tqdm
+import time
+
+start_time = time.time()
 
 size = opts['resize']
 top_n = opts['top_k']
@@ -104,6 +107,9 @@ mean_acc_1_list = np.mean(acc_1_list)
 mean_acc_3_list = np.mean(acc_3_list)
 mean_acc_5_list = np.mean(acc_5_list)
 
+end_time = time.time()
+runtime_seconds = end_time - start_time
+runtime_minutes = runtime_seconds / 60
 
 print(f"mean_ap_k_list: {mean_ap_k_list} \n"
       f"mean_hit_rate_k_list: {mean_hit_rate_k_list} \n"
@@ -111,6 +117,7 @@ print(f"mean_ap_k_list: {mean_ap_k_list} \n"
       f" mean ACC@1: {mean_acc_1_list} \n"
       f" mean ACC@3: {mean_acc_3_list} \n"
       f" mean ACC@5: {mean_acc_5_list} \n"
+      f"Runtime: {runtime_minutes:.2f} minutes"
       )
 
 
