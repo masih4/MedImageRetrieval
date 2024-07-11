@@ -11,4 +11,5 @@ opts['pretrained_network_name'] = 'VGG19'
 
 opts['save_train_hard'] = '../dataset/128/pathmnist_128/train/'
 opts['save_test_hard'] = '../dataset/128/pathmnist_128/test/'
+opts['save_figures'] = '../results/figures/'
 
