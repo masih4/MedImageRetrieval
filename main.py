@@ -11,7 +11,7 @@ from metric import *
 from tqdm import tqdm
 import time
 
-start_time = time.time()
+
 
 size = opts['resize']
 top_n = opts['top_k']
@@ -60,16 +60,15 @@ else:
     train_images_rgb = train_images_resized
     test_images_rgb = test_images_resized
 
-# Normalize images
+
+start_time_train = time.time()
 train_images_rgb = preprocess_input(train_images_rgb)
-test_images_rgb = preprocess_input(test_images_rgb )
-
-
-
-
-
-# Extract features
 train_features = model.predict(train_images_rgb, batch_size=8)
+print(train_features.shape)
+end_time_train = time.time()
+
+start_time_test = time.time()
+test_images_rgb = preprocess_input(test_images_rgb )
 test_features = model.predict(test_images_rgb, batch_size=8)
 
 
@@ -107,9 +106,13 @@ mean_acc_1_list = np.mean(acc_1_list)
 mean_acc_3_list = np.mean(acc_3_list)
 mean_acc_5_list = np.mean(acc_5_list)
 
-end_time = time.time()
-runtime_seconds = end_time - start_time
-runtime_minutes = runtime_seconds / 60
+end_time_test = time.time()
+
+runtime_seconds_train = end_time_train - start_time_train
+runtime_minutes_train = runtime_seconds_train / 60
+
+runtime_seconds_test = end_time_test - start_time_test
+runtime_minutes_test = runtime_seconds_test / 60
 
 print(f"mean_ap_k_list: {mean_ap_k_list} \n"
       f"mean_hit_rate_k_list: {mean_hit_rate_k_list} \n"
@@ -117,7 +120,8 @@ print(f"mean_ap_k_list: {mean_ap_k_list} \n"
       f" mean ACC@1: {mean_acc_1_list} \n"
       f" mean ACC@3: {mean_acc_3_list} \n"
       f" mean ACC@5: {mean_acc_5_list} \n"
-      f"Runtime: {runtime_minutes:.2f} minutes"
+      f"Runtime Train: {runtime_minutes_train:.2f} minutes \n"
+      f"Runtime Test: {runtime_minutes_test:.2f} minutes \n"
       )
 
 
