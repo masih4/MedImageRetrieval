@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="910a4753-bd73-4cbf-a9c9-7fb4341a6e9d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params.py" beforeDir="false" afterPath="$PROJECT_DIR$/params.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_slow_meomryefficient.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_slow_meomryefficient.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +152,7 @@
       <workItem from="1719488087187" duration="10855000" />
       <workItem from="1720006388109" duration="69134000" />
       <workItem from="1720615248291" duration="5792000" />
-      <workItem from="1720622638093" duration="7801000" />
+      <workItem from="1720622638093" duration="8303000" />
     </task>
     <servers />
   </component>
@@ -170,17 +169,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main_slow_meomryefficient.py</url>
-          <line>106</line>
+          <line>109</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main_slow_meomryefficient.py</url>
-          <line>75</line>
+          <line>74</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main_slow_meomryefficient.py</url>
-          <line>22</line>
+          <line>21</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

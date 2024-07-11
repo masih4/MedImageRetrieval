@@ -15,7 +15,6 @@ import os
 from natsort import natsorted
 import time
 
-start_time = time.time()
 
 size = opts['resize']
 top_n = opts['top_k']
@@ -75,6 +74,8 @@ test_files = natsorted(test_files)
 
 train_features, test_features = [], []
 
+start_time_train = time.time()
+
 for i_train in tqdm(range(len(train_files))):
     img = np.load(train_files[i_train])
     train_images_resized = cv2.resize(img, (size, size))
@@ -86,7 +87,9 @@ for i_train in tqdm(range(len(train_files))):
     train_images_rgb_expand = np.expand_dims(train_images_rgb, axis=0)
     train_features_img = model.predict(train_images_rgb_expand, batch_size=1, verbose = 0)
     train_features.append(train_features_img)
+end_time_train = time.time()
 
+start_time_test = time.time()
 for i_test in tqdm(range(len(test_files))):
     img = np.load(test_files[i_test])
     test_images_resized = cv2.resize(img, (size, size))
@@ -138,9 +141,13 @@ mean_acc_1_list = np.mean(acc_1_list)
 mean_acc_3_list = np.mean(acc_3_list)
 mean_acc_5_list = np.mean(acc_5_list)
 
-end_time = time.time()
-runtime_seconds = end_time - start_time
-runtime_minutes = runtime_seconds / 60
+end_time_test = time.time()
+
+runtime_seconds_train = end_time_train - start_time_train
+runtime_minutes_train = runtime_seconds_train / 60
+
+runtime_seconds_test = end_time_test - start_time_test
+runtime_minutes_test = runtime_seconds_test / 60
 
 print(f"mean_ap_k_list: {mean_ap_k_list} \n"
       f"mean_hit_rate_k_list: {mean_hit_rate_k_list} \n"
@@ -148,7 +155,8 @@ print(f"mean_ap_k_list: {mean_ap_k_list} \n"
       f" mean ACC@1: {mean_acc_1_list} \n"
       f" mean ACC@3: {mean_acc_3_list} \n"
       f" mean ACC@5: {mean_acc_5_list} \n"
-      f"Runtime: {runtime_minutes:.2f} minutes"
+      f"Runtime Train: {runtime_minutes_train:.2f} minutes \n"
+      f"Runtime Test: {runtime_minutes_test:.2f} minutes \n"
       )
 
 
