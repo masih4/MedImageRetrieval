@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="910a4753-bd73-4cbf-a9c9-7fb4341a6e9d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_3D.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_3D.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/params.py" beforeDir="false" afterPath="$PROJECT_DIR$/params.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plot_breastmnist_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/plot_breastmnist_test.py" afterDir="false" />
     </list>
@@ -44,7 +45,7 @@
       <recent name="C:\Masih\research\DPU\projects\Nemat visiting scholar\paper 2\code" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_3D">
+  <component name="RunManager" selected="Python.plot_breastmnist_test">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="code" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -157,10 +158,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.plot_breastmnist_test" />
         <item itemvalue="Python.main_3D" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.main_slow_meomryefficient" />
-        <item itemvalue="Python.plot_breastmnist_test" />
         <item itemvalue="Python.main_pathmnist_128_224" />
       </list>
     </recent_temporary>
@@ -176,7 +177,7 @@
       <workItem from="1719488087187" duration="10855000" />
       <workItem from="1720006388109" duration="69134000" />
       <workItem from="1720615248291" duration="5792000" />
-      <workItem from="1720622638093" duration="31983000" />
+      <workItem from="1720622638093" duration="42311000" />
     </task>
     <servers />
   </component>
@@ -202,24 +203,19 @@
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/plot_breastmnist_test.py</url>
-          <line>55</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/plot_breastmnist_test.py</url>
-          <line>6</line>
-          <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main.py</url>
           <line>74</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/main_3D.py</url>
-          <line>77</line>
+          <line>75</line>
           <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main_3D.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -227,9 +223,9 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/code$main_pathmnist_128_224.coverage" NAME="main_pathmnist_128_224 Coverage Results" MODIFIED="1720522320089" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/code$metric.coverage" NAME="metric Coverage Results" MODIFIED="1720428133472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/code$plot_breastmnist_test.coverage" NAME="plot_breastmnist_test Coverage Results" MODIFIED="1720701736556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/code$plot_breastmnist_test.coverage" NAME="plot_breastmnist_test Coverage Results" MODIFIED="1720951080922" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/code$main.coverage" NAME="main Coverage Results" MODIFIED="1720776050341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/code$main_slow_meomryefficient.coverage" NAME="main_slow_meomryefficient Coverage Results" MODIFIED="1720735263746" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/code$main_3D.coverage" NAME="main_3D Coverage Results" MODIFIED="1720789065063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/code$main_3D.coverage" NAME="main_3D Coverage Results" MODIFIED="1720950430507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

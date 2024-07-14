@@ -44,8 +44,22 @@ data = {
         'Model': ['VGG19', 'ResNet50', 'DenseNet', 'Eff.Net', 'CCL', 'SAM', 'MEDSAM', 'Biomedclip'],
         '28x28': [68.67, 69.74, 71.43, 64.24, 40, 40, 40, 40],
         '64x64': [76.40, 79.83, 81.89, 73.21, 40, 40, 40, 40],
-        '128x128': [80.52, 40.00, 40.00, 40.00, 40, 40, 40, 40],
+        '128x128': [80.52, 84.40, 84.19, 79.33, 40, 40, 40, 40],
         '224x224': [81.10, 85.18, 85.01, 79.61, 40, 40, 40, 40]
+    },
+    'AdrenalMNIST3D': {
+        'Model': ['VGG19', 'ResNet50', 'DenseNet', 'Eff.Net', 'CCL', 'SAM', 'MEDSAM', 'Biomedclip'],
+        '28x28': [72.48, 71.47, 74.16, 71.47, 40, 40, 40, 40],
+        '64x64': [72.14, 67.11, 68.79, 62.75, 40, 40, 40, 40],
+        '128x128': [40, 40, 40, 40, 40, 40, 40, 40],
+        '224x224': [40, 40, 40, 40, 40, 40, 40, 40]
+    },
+    'SynapseMNIST3D': {
+        'Model': ['VGG19', 'ResNet50', 'DenseNet', 'Eff.Net', 'CCL', 'SAM', 'MEDSAM', 'Biomedclip'],
+        '28x28': [1, 1, 1, 1, 40, 40, 40, 40],
+        '64x64': [67.89, 66.47, 63.92, 62.21, 40, 40, 40, 40],
+        '128x128': [40, 40, 40, 40, 40, 40, 40, 40],
+        '224x224': [40, 40, 40, 40, 40, 40, 40, 40]
     }
 }
 
@@ -53,19 +67,3 @@ data = {
 dfs = {key: pd.DataFrame(value).set_index('Model') for key, value in data.items()}
 
 # Plotting the data and saving the plots
-for key, df in dfs.items():
-    plt.figure(figsize=(12, 8))
-    ax = df.plot(kind='bar', ylim=(40, 90))
-    plt.title(f'ACC@1 for {key} using Different Models and Image Sizes')
-    plt.xlabel('Model')
-    plt.ylabel('ACC@1')
-    plt.xticks(rotation=0, fontsize=6)  # Make x-axis font size smaller
-    plt.grid(axis='y')
-
-    # Place legend outside the plot
-    plt.legend(title='Image Size', bbox_to_anchor=(1.05, 1), loc='upper left')
-
-    # Save the plot as a .png file
-    plt.tight_layout()
-    plt.savefig(opts['save_figures'] + f'{key}_ACC@1.png', dpi=300)
-    plt.show()

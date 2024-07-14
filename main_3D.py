@@ -25,9 +25,7 @@ file_pattern = '*.npy'
 def convert_to_rgb(images):
     return np.stack([images, images, images], axis=-1)
 
-
-
-##############################################################################
+#####################################################
 # run only if you do not have saved images on storage
 # train_images = data['train_images']
 # test_images = data['test_images']
