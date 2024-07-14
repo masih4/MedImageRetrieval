@@ -170,12 +170,12 @@ def metric_cal(test_features, train_features, type = 'None'):
     mean_acc_5_list = np.mean(acc_5_list)
 
     print("Results for " + type + "\n",
-          f"mean_ap_k_list: {mean_ap_k_list} \n"
-          f"mean_hit_rate_k_list: {mean_hit_rate_k_list} \n"
-          f" mean_mmv_k_list: {mean_mmv_k_list} \n"
-          f" mean ACC@1: {mean_acc_1_list} \n"
-          f" mean ACC@3: {mean_acc_3_list} \n"
-          f" mean ACC@5: {mean_acc_5_list} \n"
+          f"mean_ap_k_list: {mean_ap_k_list:.2f} \n"
+          f"mean_hit_rate_k_list: {mean_hit_rate_k_list:.2f} \n"
+          f" mean_mmv_k_list: {mean_mmv_k_list:.2f} \n"
+          f" mean ACC@1: {mean_acc_1_list:.2f} \n"
+          f" mean ACC@3: {mean_acc_3_list:.2f} \n"
+          f" mean ACC@5: {mean_acc_5_list:.2f} \n"
           )
 
 metric_cal(test_features, train_features, type='without feature reduction')

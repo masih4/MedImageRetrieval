@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="910a4753-bd73-4cbf-a9c9-7fb4341a6e9d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_3D.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_3D.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_slow_meomryefficient.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_slow_meomryefficient.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/params.py" beforeDir="false" afterPath="$PROJECT_DIR$/params.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plot_breastmnist_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/plot_breastmnist_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +178,7 @@
       <workItem from="1719488087187" duration="10855000" />
       <workItem from="1720006388109" duration="69134000" />
       <workItem from="1720615248291" duration="5792000" />
-      <workItem from="1720622638093" duration="42311000" />
+      <workItem from="1720622638093" duration="43406000" />
     </task>
     <servers />
   </component>

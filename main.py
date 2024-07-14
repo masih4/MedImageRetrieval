@@ -114,12 +114,12 @@ runtime_minutes_train = runtime_seconds_train / 60
 runtime_seconds_test = end_time_test - start_time_test
 runtime_minutes_test = runtime_seconds_test / 60
 
-print(f"mean_ap_k_list: {mean_ap_k_list} \n"
-      f"mean_hit_rate_k_list: {mean_hit_rate_k_list} \n"
-      f" mean_mmv_k_list: {mean_mmv_k_list} \n"
-      f" mean ACC@1: {mean_acc_1_list} \n"
-      f" mean ACC@3: {mean_acc_3_list} \n"
-      f" mean ACC@5: {mean_acc_5_list} \n"
+print(f"mean_ap_k_list: {mean_ap_k_list:.2f} \n"
+      f"mean_hit_rate_k_list: {mean_hit_rate_k_list:.2f} \n"
+      f" mean_mmv_k_list: {mean_mmv_k_list:.2f} \n"
+      f" mean ACC@1: {mean_acc_1_list:.2f} \n"
+      f" mean ACC@3: {mean_acc_3_list:.2f} \n"
+      f" mean ACC@5: {mean_acc_5_list:.2f} \n"
       f"Runtime Train: {runtime_minutes_train:.2f} minutes \n"
       f"Runtime Test: {runtime_minutes_test:.2f} minutes \n"
       )
