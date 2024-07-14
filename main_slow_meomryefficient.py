@@ -15,15 +15,14 @@ import os
 from natsort import natsorted
 import time
 
-
 size = opts['resize']
 top_n = opts['top_k']
 data = np.load(opts['data_path'])
 file_pattern = '*.npy'
 
+
 def convert_to_rgb(images):
     return np.stack([images, images, images], axis=-1)
-
 
 
 ##############################################################################
@@ -43,23 +42,25 @@ def convert_to_rgb(images):
 train_labels = data['train_labels']
 test_labels = data['test_labels']
 
-
 if opts['pretrained_network_name'] == 'EfficientNetV2M':
     from tensorflow.keras.applications.efficientnet_v2 import EfficientNetV2M, preprocess_input
+
     model = EfficientNetV2M(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
 elif opts['pretrained_network_name'] == 'VGG19':
     from tensorflow.keras.applications.vgg19 import VGG19, preprocess_input
+
     model = VGG19(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
 elif opts['pretrained_network_name'] == 'DenseNet121':
     from tensorflow.keras.applications.densenet import DenseNet121, preprocess_input
+
     model = DenseNet121(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
 elif opts['pretrained_network_name'] == 'ResNet50':
     from tensorflow.keras.applications.resnet import ResNet50, preprocess_input
-    model = ResNet50(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
+    model = ResNet50(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
 train_files = glob.glob(os.path.join(opts['save_train_hard'], file_pattern))
 test_files = glob.glob(os.path.join(opts['save_test_hard'], file_pattern))
@@ -70,7 +71,6 @@ test_files = glob.glob(os.path.join(opts['save_test_hard'], file_pattern))
 
 train_files = natsorted(train_files)
 test_files = natsorted(test_files)
-
 
 train_features, test_features = [], []
 
@@ -85,7 +85,7 @@ for i_train in tqdm(range(len(train_files))):
         train_images_rgb = train_images_resized
     train_images_rgb = preprocess_input(train_images_rgb)
     train_images_rgb_expand = np.expand_dims(train_images_rgb, axis=0)
-    train_features_img = model.predict(train_images_rgb_expand, batch_size=1, verbose = 0)
+    train_features_img = model.predict(train_images_rgb_expand, batch_size=1, verbose=0)
     train_features.append(train_features_img)
 end_time_train = time.time()
 
@@ -99,13 +99,8 @@ for i_test in tqdm(range(len(test_files))):
         test_images_rgb = test_images_resized
     test_images_rgb = preprocess_input(test_images_rgb)
     test_images_rgb_expand = np.expand_dims(test_images_rgb, axis=0)
-    test_features_img = model.predict(test_images_rgb_expand, batch_size=1, verbose = 0)
+    test_features_img = model.predict(test_images_rgb_expand, batch_size=1, verbose=0)
     test_features.append(test_features_img)
-
-
-
-
-
 
 ap_k_list, hit_rate_k_list, mmv_k_list, acc_1_list, acc_3_list, acc_5_list = [], [], [], [], [], []
 for i in tqdm(range(len(test_features))):
@@ -117,8 +112,7 @@ for i in tqdm(range(len(test_features))):
         retrieved.append((distance, idx))
     results = sorted(retrieved)[0:top_n]
 
-
-    labels_ret =  [train_labels[r[1]] for r in results]
+    labels_ret = [train_labels[r[1]] for r in results]
 
     ap_k_idx = ap_k([label_true], labels_ret, k=top_n)
     hit_rate_k_idx = hit_rate_k([label_true], labels_ret, k=top_n)
@@ -158,7 +152,3 @@ print(f"mean_ap_k_list: {mean_ap_k_list:.2f} \n"
       f"Runtime Train: {runtime_minutes_train:.2f} minutes \n"
       f"Runtime Test: {runtime_minutes_test:.2f} minutes \n"
       )
-
-
-
-
