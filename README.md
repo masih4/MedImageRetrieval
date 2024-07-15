@@ -29,7 +29,7 @@ Cosine similarity index
 - For pre-trained CNNs for 3D datasets run `main_CNN_3D.py`
 - To create bar charts run `plot.py`
 
-##Citation:
+## Citation:
 Will be updated
 ```
 @article{,
@@ -41,7 +41,7 @@ year = "",
 doi = "",
 author = "Amirreza Mahbod and Nematollah Saeidi and Ramona Woitek"
 }
-
+```
 
 
 ## Contact:
