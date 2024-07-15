@@ -23,6 +23,13 @@ Cosine similarity index
 - ACC@3
 - ACC@5 ( = HitRate@5)
 
+## How to run:
+- For pre-trained CNNs for 2D datasets run `main_CNN.py`
+- For pre-trained CNNs for 2D datasets (if your memory is limited to lead the entire data) run `main_CNN_slow.py`
+- For pre-trained CNNs for 3D datasets run `main_CNN_3D.py`
+- To create bar charts run `plot.py`
+
+
 
 ## Contact:
 Amirreza Mahbod
