@@ -11,22 +11,36 @@ from urllib.request import urlopen
 from PIL import Image
 from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
 import torch
+from natsort import natsorted
+import glob
+import os
 
 size = opts['resize']
 top_n = opts['top_k']
 data = np.load(opts['data_path'])
-
-train_images = data['train_images']
-train_labels = data['train_labels']
-test_images = data['test_images']
-test_labels = data['test_labels']
+file_pattern = '*.npy'
 
 
 def convert_to_rgb(images):
     return np.stack([images, images, images], axis=-1)
 
 
-print('number of classes:', len(np.unique(train_labels)))
+##############################################################################
+# run only if you do not have saved images on storage
+# train_images = data['train_images']
+# test_images = data['test_images']
+# for train_idx in tqdm(range(len(train_images))):
+#     img_train = train_images[train_idx]
+#     np.save(opts['save_train_hard'] + str(train_idx) + '.npy', img_train)
+#
+# for test_idx in tqdm(range(len(test_images))):
+#     img_test = test_images[test_idx]
+#     np.save(opts['save_test_hard'] + str(test_idx) + '.npy', img_test)
+##############################################################################
+
+
+train_labels = data['train_labels']
+test_labels = data['test_labels']
 
 if opts['pretrained_network_name'] == 'EfficientNetV2M':
     from tensorflow.keras.applications.efficientnet_v2 import EfficientNetV2M, preprocess_input
@@ -52,6 +66,17 @@ elif opts['pretrained_network_name'] == 'biomedclip':
     model, preprocess = create_model_from_pretrained('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
     tokenizer = get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
 
+train_files = glob.glob(os.path.join(opts['save_train_hard'], file_pattern))
+test_files = glob.glob(os.path.join(opts['save_test_hard'], file_pattern))
+
+# this is NOT sorting correctly!
+# train_files.sort()
+# test_files.sort()
+
+train_files = natsorted(train_files)
+test_files = natsorted(test_files)
+
+
 labels = [
     'dummy text'
 ]
@@ -63,22 +88,20 @@ model.eval()
 context_length = 256
 texts = tokenizer([l for l in labels], context_length=context_length).to(device)
 
-# Resize images
-train_images_resized = np.array([cv2.resize(img, (size, size)) for img in train_images])
-test_images_resized = np.array([cv2.resize(img, (size, size)) for img in test_images])
 
-if len(train_images_resized.shape) == 3:
-    train_images_rgb = convert_to_rgb(train_images_resized)
-    test_images_rgb = convert_to_rgb(test_images_resized)
-else:
-    train_images_rgb = train_images_resized
-    test_images_rgb = test_images_resized
 
 train_features, test_features = [], []
 
 start_time_train = time.time()
-for counter in tqdm(range(len(train_images_rgb))):
-    image_pil = Image.fromarray(train_images_rgb[counter])
+for i_train in tqdm(range(len(train_files))):
+    img = np.load(train_files[i_train])
+    train_images_resized = cv2.resize(img, (size, size))
+    if len(train_images_resized.shape) == 2:
+        train_images_rgb = convert_to_rgb(train_images_resized)
+    else:
+        train_images_rgb = train_images_resized
+
+    image_pil = Image.fromarray(train_images_rgb)
     image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
     with torch.no_grad():
         image_features, _, _ = model(image_pil_preprocess, texts)
@@ -86,14 +109,26 @@ for counter in tqdm(range(len(train_images_rgb))):
         train_features.append(features_squeezed.cpu().numpy())
 end_time_train = time.time()
 
+
+
+
 start_time_test = time.time()
-for counter in tqdm(range(len(test_images_rgb))):
-    image_pil = Image.fromarray(test_images_rgb[counter])
+for i_test in tqdm(range(len(test_files))):
+    img = np.load(test_files[i_test])
+    test_images_resized = cv2.resize(img, (size, size))
+    if len(test_images_resized.shape) == 2:
+        test_images_rgb = convert_to_rgb(test_images_resized)
+    else:
+        test_images_rgb = test_images_resized
+
+    image_pil = Image.fromarray(test_images_rgb)
     image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
     with torch.no_grad():
         image_features, _, _ = model(image_pil_preprocess, texts)
         features_squeezed = image_features.squeeze()
         test_features.append(features_squeezed.cpu().numpy())
+
+
 
 ap_k_list, hit_rate_k_list, mmv_k_list, acc_1_list, acc_3_list, acc_5_list = [], [], [], [], [], []
 for i in tqdm(range(len(test_features))):
