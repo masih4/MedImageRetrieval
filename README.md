@@ -24,9 +24,11 @@ Cosine similarity index
 - ACC@5 ( = HitRate@5)
 
 ## How to run:
-- For pre-trained CNNs for 2D datasets run `main_CNN.py`
-- For pre-trained CNNs for 2D datasets (if your memory is limited to load the entire data) run `main_CNN_slow.py`
-- For pre-trained CNNs for 3D datasets run `main_CNN_3D.py`
+- For pre-trained CNNs for 2D datasets run `main_2D_CNN.py`
+- For pre-trained CNNs for 2D datasets (if your memory is limited to load the entire data) run `main_2D_CNN_slow.py`
+- For pre-trained BioMedClip for 2D datasets run `main_2D_biomedclip.py`
+- For pre-trained BioMedCLip for 2D datasets (if your memory is limited to load the entire data) run `main_2D_Biomedclip_slow.py`
+- For pre-trained models (CNN or BioMedClip) for 3D datasets run `main_3D.py`
 - To create bar charts run `plot.py`
 
 ## Citation:
