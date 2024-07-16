@@ -1,28 +1,26 @@
 import numpy as np
+import tensorflow as tf
 from params import opts
+from tensorflow.keras.preprocessing.image import img_to_array, array_to_img
+from tensorflow.keras.models import Model
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics import precision_score, average_precision_score
 import matplotlib.pyplot as plt
 import cv2
 from metric import *
 from tqdm import tqdm
-import time
-from urllib.request import urlopen
-from PIL import Image
-from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
-import torch
-from natsort import natsorted
+import gc
 import glob
 import os
+from natsort import natsorted
+import time
+from utils import *
 
 size = opts['resize']
 top_n = opts['top_k']
 data = np.load(opts['data_path'])
 file_pattern = '*.npy'
 
-
-def convert_to_rgb(images):
-    return np.stack([images, images, images], axis=-1)
 
 
 ##############################################################################
@@ -62,10 +60,6 @@ elif opts['pretrained_network_name'] == 'ResNet50':
 
     model = ResNet50(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
-elif opts['pretrained_network_name'] == 'biomedclip':
-    model, preprocess = create_model_from_pretrained('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
-    tokenizer = get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
-
 train_files = glob.glob(os.path.join(opts['save_train_hard'], file_pattern))
 test_files = glob.glob(os.path.join(opts['save_test_hard'], file_pattern))
 
@@ -76,23 +70,10 @@ test_files = glob.glob(os.path.join(opts['save_test_hard'], file_pattern))
 train_files = natsorted(train_files)
 test_files = natsorted(test_files)
 
-
-labels = [
-    'dummy text'
-]
-
-device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-model.to(device)
-model.eval()
-
-context_length = 256
-texts = tokenizer([l for l in labels], context_length=context_length).to(device)
-
-
-
 train_features, test_features = [], []
 
 start_time_train = time.time()
+
 for i_train in tqdm(range(len(train_files))):
     img = np.load(train_files[i_train])
     train_images_resized = cv2.resize(img, (size, size))
@@ -100,17 +81,11 @@ for i_train in tqdm(range(len(train_files))):
         train_images_rgb = convert_to_rgb(train_images_resized)
     else:
         train_images_rgb = train_images_resized
-
-    image_pil = Image.fromarray(train_images_rgb)
-    image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
-    with torch.no_grad():
-        image_features, _, _ = model(image_pil_preprocess, texts)
-        features_squeezed = image_features.squeeze()
-        train_features.append(features_squeezed.cpu().numpy())
+    train_images_rgb = preprocess_input(train_images_rgb)
+    train_images_rgb_expand = np.expand_dims(train_images_rgb, axis=0)
+    train_features_img = model.predict(train_images_rgb_expand, batch_size=1, verbose=0)
+    train_features.append(train_features_img)
 end_time_train = time.time()
-
-
-
 
 start_time_test = time.time()
 for i_test in tqdm(range(len(test_files))):
@@ -120,15 +95,10 @@ for i_test in tqdm(range(len(test_files))):
         test_images_rgb = convert_to_rgb(test_images_resized)
     else:
         test_images_rgb = test_images_resized
-
-    image_pil = Image.fromarray(test_images_rgb)
-    image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
-    with torch.no_grad():
-        image_features, _, _ = model(image_pil_preprocess, texts)
-        features_squeezed = image_features.squeeze()
-        test_features.append(features_squeezed.cpu().numpy())
-
-
+    test_images_rgb = preprocess_input(test_images_rgb)
+    test_images_rgb_expand = np.expand_dims(test_images_rgb, axis=0)
+    test_features_img = model.predict(test_images_rgb_expand, batch_size=1, verbose=0)
+    test_features.append(test_features_img)
 
 ap_k_list, hit_rate_k_list, mmv_k_list, acc_1_list, acc_3_list, acc_5_list = [], [], [], [], [], []
 for i in tqdm(range(len(test_features))):

@@ -11,6 +11,7 @@ from urllib.request import urlopen
 from PIL import Image
 from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
 import torch
+from utils import *
 
 size = opts['resize']
 top_n = opts['top_k']
@@ -21,9 +22,6 @@ train_labels = data['train_labels']
 test_images = data['test_images']
 test_labels = data['test_labels']
 
-
-def convert_to_rgb(images):
-    return np.stack([images, images, images], axis=-1)
 
 
 print('number of classes:', len(np.unique(train_labels)))

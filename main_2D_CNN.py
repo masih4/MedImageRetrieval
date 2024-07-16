@@ -10,6 +10,7 @@ import cv2
 from metric import *
 from tqdm import tqdm
 import time
+from utils import *
 
 size = opts['resize']
 top_n = opts['top_k']
@@ -20,9 +21,6 @@ train_labels = data['train_labels']
 test_images = data['test_images']
 test_labels = data['test_labels']
 
-
-def convert_to_rgb(images):
-    return np.stack([images, images, images], axis=-1)
 
 
 print('number of classes:', len(np.unique(train_labels)))

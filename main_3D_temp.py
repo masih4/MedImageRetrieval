@@ -97,8 +97,8 @@ test_files = natsorted(test_files)
 train_features, test_features = [], []
 
 start_time_train = time.time()
-# for i_train in tqdm(range(len(train_files))):
-for i_train in tqdm(range(50)):
+for i_train in tqdm(range(len(train_files))):
+# for i_train in tqdm(range(50)):
     img_3d = np.load(train_files[i_train])
     # resize
     depth_factor = size / img_3d.shape[0]
@@ -135,8 +135,8 @@ for i_train in tqdm(range(50)):
 end_time_train = time.time()
 
 start_time_test = time.time()
-#for i_test in tqdm(range(len(test_files))):
-for i_test in tqdm(range(50)):
+for i_test in tqdm(range(len(test_files))):
+# for i_test in tqdm(range(50)):
     img_3d = np.load(test_files[i_test])
     # resize
     depth_factor = size / img_3d.shape[0]

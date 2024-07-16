@@ -20,15 +20,13 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 import umap
 from sklearn.manifold import TSNE
+from utils import *
 
 size = opts['resize']
 top_n = opts['top_k']
 data = np.load(opts['data_path'])
 file_pattern = '*.npy'
 
-
-def convert_to_rgb(images):
-    return np.stack([images, images, images], axis=-1)
 
 
 #####################################################
