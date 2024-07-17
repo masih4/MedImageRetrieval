@@ -106,9 +106,6 @@ def load_and_preprocess_images(files, size, opts):
         for i in range(size):
             resized_image_3d[i] = cv2.resize(resized_depth_image_3d[i], (size, size), interpolation=cv2.INTER_CUBIC)
         images_resized = resized_image_3d
-        ## should be removed
-        if opts['CNN']:
-            images_resized = preprocess_input(images_resized)
         ###########################3
         feature_whole_imgX = []
         for x_slice in range(len(images_resized[0])):
@@ -116,7 +113,7 @@ def load_and_preprocess_images(files, size, opts):
             slice_rgb = convert_to_rgb(slice)
 
             if opts['CNN']:
-                #slice_rgb = preprocess_input(slice_rgb)
+                slice_rgb = preprocess_input(slice_rgb)
                 slice_rgb_expand = np.expand_dims(slice_rgb, axis=0)
                 slice_rgb_feature = model.predict(slice_rgb_expand, batch_size=1, verbose=0)
                 feature_whole_imgX.append(slice_rgb_feature)

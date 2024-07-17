@@ -56,7 +56,7 @@ test_files = glob.glob(os.path.join(opts['save_test_hard'], file_pattern))
 train_files = natsorted(train_files)
 test_files = natsorted(test_files)
 
-train_features, test_features = [], []
+
 
 start_time_train = time.time()
 train_features = load_and_preprocess_images(train_files, size, opts)
