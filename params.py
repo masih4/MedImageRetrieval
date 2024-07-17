@@ -1,21 +1,22 @@
 # set all hyper parameters
 opts = {}
-opts['resize'] = 64
+opts['resize'] = 32
 opts['top_k'] = 5
-opts['data_path'] = '../dataset/64/adrenalmnist3d_64.npz'
-opts['pretrained_network_name'] = 'DenseNet121'
+opts['data_path'] = '../dataset/28/pathmnist.npz'
+opts['pretrained_network_name'] = 'medclip'
 # 'VGG19'
 # 'ResNet50'
 # 'DenseNet121'
 # 'EfficientNetV2M'
 # 'biomedclip'
+# 'medclip'
 
-opts['save_train_hard'] = '../dataset/64/adrenalmnist3d_64/train/'
-opts['save_test_hard'] = '../dataset/64/adrenalmnist3d_64/test/'
+opts['save_train_hard'] = '../dataset/64/synapsemnist3d_64/train/'
+opts['save_test_hard'] = '../dataset/64/synapsemnist3d_64/test/'
 opts['save_figures'] = '../results/figures/'
 
-opts['framework'] = 'tf'
+opts['framework'] = 'pytorch'
 # 'pytorch'
 # tf
 
-opts['CNN'] = True
+opts['CNN'] = False

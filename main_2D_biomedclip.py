@@ -49,17 +49,21 @@ elif opts['pretrained_network_name'] == 'ResNet50':
 elif opts['pretrained_network_name'] == 'biomedclip':
     model, preprocess = create_model_from_pretrained('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
     tokenizer = get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
+    labels = ['dummy text']
+    device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+    model.to(device)
+    model.eval()
+    context_length = 256
+    texts = tokenizer([l for l in labels], context_length=context_length).to(device)
 
-labels = [
-    'dummy text'
-]
-
-device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-model.to(device)
-model.eval()
-
-context_length = 256
-texts = tokenizer([l for l in labels], context_length=context_length).to(device)
+elif opts['pretrained_network_name'] == 'medclip':
+    from medclip import MedCLIPModel, MedCLIPVisionModelViT
+    from medclip import MedCLIPProcessor
+    processor = MedCLIPProcessor()
+    model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
+    # model = MedCLIPModel(vision_cls=MedCLIPVisionModel) # for Resnet backbone
+    model.from_pretrained()
+    model.cuda()
 
 # Resize images
 train_images_resized = np.array([cv2.resize(img, (size, size)) for img in train_images])
@@ -77,21 +81,56 @@ train_features, test_features = [], []
 start_time_train = time.time()
 for counter in tqdm(range(len(train_images_rgb))):
     image_pil = Image.fromarray(train_images_rgb[counter])
-    image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
-    with torch.no_grad():
-        image_features, _, _ = model(image_pil_preprocess, texts)
-        features_squeezed = image_features.squeeze()
-        train_features.append(features_squeezed.cpu().numpy())
+    if opts['pretrained_network_name'] =='biomedclip':
+        image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
+        with torch.no_grad():
+            image_features, _, _ = model(image_pil_preprocess, texts)
+            features_squeezed = image_features.squeeze()
+            train_features.append(features_squeezed.cpu().numpy())
+    if opts['pretrained_network_name'] == 'medclip':
+        inputs = processor(
+            text=["dummy","dummy"],
+            images=image_pil,
+            return_tensors="pt",
+            padding=True
+        )
+        with torch.no_grad():
+            outputs = model(**inputs)
+            features_squeezed = outputs['img_embeds'].squeeze()
+            train_features.append(features_squeezed.cpu().numpy())
 end_time_train = time.time()
+
 
 start_time_test = time.time()
 for counter in tqdm(range(len(test_images_rgb))):
     image_pil = Image.fromarray(test_images_rgb[counter])
-    image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
-    with torch.no_grad():
-        image_features, _, _ = model(image_pil_preprocess, texts)
-        features_squeezed = image_features.squeeze()
-        test_features.append(features_squeezed.cpu().numpy())
+    if opts['pretrained_network_name'] =='biomedclip':
+        image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
+        with torch.no_grad():
+            image_features, _, _ = model(image_pil_preprocess, texts)
+            features_squeezed = image_features.squeeze()
+            test_features.append(features_squeezed.cpu().numpy())
+    if opts['pretrained_network_name'] == 'medclip':
+        inputs = processor(
+            text=["dummy","dummy"],
+            images=image_pil,
+            return_tensors="pt",
+            padding=True
+        )
+        with torch.no_grad():
+            outputs = model(**inputs)
+            features_squeezed = outputs['img_embeds'].squeeze()
+            test_features.append(features_squeezed.cpu().numpy())
+
+
+# start_time_test = time.time()
+# for counter in tqdm(range(len(test_images_rgb))):
+#     image_pil = Image.fromarray(test_images_rgb[counter])
+#     image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
+#     with torch.no_grad():
+#         image_features, _, _ = model(image_pil_preprocess, texts)
+#         features_squeezed = image_features.squeeze()
+#         test_features.append(features_squeezed.cpu().numpy())
 
 ap_k_list, hit_rate_k_list, mmv_k_list, acc_1_list, acc_3_list, acc_5_list = [], [], [], [], [], []
 for i in tqdm(range(len(test_features))):
