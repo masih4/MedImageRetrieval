@@ -2,7 +2,7 @@
 opts = {}
 opts['resize'] = 32
 opts['top_k'] = 5
-opts['data_path'] = '../dataset/28/pathmnist.npz'
+opts['data_path'] = '../dataset/28/breastmnist.npz'
 opts['pretrained_network_name'] = 'medclip'
 # 'VGG19'
 # 'ResNet50'

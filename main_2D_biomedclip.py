@@ -57,12 +57,12 @@ elif opts['pretrained_network_name'] == 'biomedclip':
     texts = tokenizer([l for l in labels], context_length=context_length).to(device)
 
 elif opts['pretrained_network_name'] == 'medclip':
-    from medclip import MedCLIPModel, MedCLIPVisionModelViT
+    from medclip import MedCLIPModel, MedCLIPVisionModelViT, MedCLIPVisionModel
     from medclip import MedCLIPProcessor
     processor = MedCLIPProcessor()
-    model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
-    # model = MedCLIPModel(vision_cls=MedCLIPVisionModel) # for Resnet backbone
-    model.from_pretrained()
+    # model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
+    model = MedCLIPModel(vision_cls=MedCLIPVisionModel) # for Resnet backbone
+    model.from_pretrained(input_dir= '../pretrained_weights/medclip-resnet/')
     model.cuda()
 
 # Resize images
