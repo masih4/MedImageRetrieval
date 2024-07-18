@@ -26,9 +26,9 @@ Cosine similarity index
 ## How to run:
 - For pre-trained CNNs for 2D datasets run `main_2D_CNN.py`
 - For pre-trained CNNs for 2D datasets (if your memory is limited to load the entire data) run `main_2D_CNN_slow.py`
-- For pre-trained BioMedClip for 2D datasets run `main_2D_biomedclip.py`
-- For pre-trained BioMedCLip for 2D datasets (if your memory is limited to load the entire data) run `main_2D_Biomedclip_slow.py`
-- For pre-trained models (CNN or BioMedClip) for 3D datasets run `main_3D.py`
+- For pre-trained foundation models for 2D datasets run `main_2D_foundation.py`
+- For pre-trained BioMedCLip for 2D datasets (if your memory is limited to load the entire data) run `main_2D_foundation_slow.py`
+- For pre-trained models (CNN or foundation) for 3D datasets run `main_3D.py`
 - To create bar charts run `plot.py`
 
 ## Citation:
@@ -39,7 +39,7 @@ title = "Evaluating Pre-trained Convolutional Neural Networks and Foundation Mod
 journal = "",
 volume = "",
 pages = "",
-year = "",
+year = "2024",
 doi = "",
 author = "Amirreza Mahbod and Nematollah Saeidi and Ramona Woitek"
 }
