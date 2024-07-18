@@ -93,9 +93,17 @@ def load_and_preprocess_images(files, size, opts):
         device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
         model.to(device)
         model.eval()
-
         context_length = 256
         texts = tokenizer([l for l in labels], context_length=context_length).to(device)
+
+    elif opts['pretrained_network_name'] == 'medclip':
+        from medclip import MedCLIPModel, MedCLIPVisionModelViT, MedCLIPProcessor
+        device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+        processor = MedCLIPProcessor()
+        model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
+        model.from_pretrained(input_dir='../pretrained_weights/medclip-vit/')
+        model.cuda()
+
 
     features = []
     for file in tqdm(files):
@@ -124,10 +132,23 @@ def load_and_preprocess_images(files, size, opts):
                 with torch.no_grad():
                     image_features, _, _ = model(image_pil_preprocess, texts)
                     feature_whole_imgX.append(image_features.squeeze().cpu().numpy())
+            elif opts['pretrained_network_name'] == 'medclip':
+                slice_rgb = slice_rgb.astype(np.uint8)
+                inputs = processor(
+                    text=["dummy"] ,
+                    images= Image.fromarray(slice_rgb),
+                    return_tensors="pt",
+                    padding=True
+                ).to(device)
+                with torch.no_grad():
+                    outputs = model(**inputs)
+                    feature_whole_imgX.append(outputs['img_embeds'].squeeze().cpu().numpy())
 
         if opts['CNN']:
             feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=1).squeeze()
         elif opts['pretrained_network_name'] == 'biomedclip':
+            feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)
+        elif opts['pretrained_network_name'] == 'medclip':
             feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)
 
         features.append(feature_whole_imgX_concat)
