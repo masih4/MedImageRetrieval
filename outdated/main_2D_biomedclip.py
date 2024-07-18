@@ -60,9 +60,11 @@ elif opts['pretrained_network_name'] == 'medclip':
     from medclip import MedCLIPModel, MedCLIPVisionModelViT, MedCLIPVisionModel
     from medclip import MedCLIPProcessor
     processor = MedCLIPProcessor()
-    # model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
-    model = MedCLIPModel(vision_cls=MedCLIPVisionModel) # for Resnet backbone
-    model.from_pretrained(input_dir= '../pretrained_weights/medclip-resnet/')
+    model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
+    model.from_pretrained(input_dir='../pretrained_weights/medclip-vit/')
+    ### Note: for resenet backbone set the batchsize to 1. otherwise the output is not consistent
+    # model = MedCLIPModel(vision_cls=MedCLIPVisionModel) # for Resnet backbone
+    # model.from_pretrained(input_dir='../pretrained_weights/medclip-resnet/')
     model.cuda()
 
 # Resize images
@@ -89,7 +91,7 @@ for counter in tqdm(range(len(train_images_rgb))):
             train_features.append(features_squeezed.cpu().numpy())
     if opts['pretrained_network_name'] == 'medclip':
         inputs = processor(
-            text=["dummy","dummy"],
+            text=["dummy"],
             images=image_pil,
             return_tensors="pt",
             padding=True
@@ -122,15 +124,6 @@ for counter in tqdm(range(len(test_images_rgb))):
             features_squeezed = outputs['img_embeds'].squeeze()
             test_features.append(features_squeezed.cpu().numpy())
 
-
-# start_time_test = time.time()
-# for counter in tqdm(range(len(test_images_rgb))):
-#     image_pil = Image.fromarray(test_images_rgb[counter])
-#     image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
-#     with torch.no_grad():
-#         image_features, _, _ = model(image_pil_preprocess, texts)
-#         features_squeezed = image_features.squeeze()
-#         test_features.append(features_squeezed.cpu().numpy())
 
 ap_k_list, hit_rate_k_list, mmv_k_list, acc_1_list, acc_3_list, acc_5_list = [], [], [], [], [], []
 for i in tqdm(range(len(test_features))):
