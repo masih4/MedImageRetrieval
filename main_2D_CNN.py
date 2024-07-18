@@ -58,13 +58,13 @@ else:
 
 start_time_train = time.time()
 train_images_rgb = preprocess_input(train_images_rgb)
-train_features = model.predict(train_images_rgb, batch_size=8)
+train_features = model.predict(train_images_rgb, batch_size=opts['bath_size'])
 print(train_features.shape)
 end_time_train = time.time()
 
 start_time_test = time.time()
 test_images_rgb = preprocess_input(test_images_rgb)
-test_features = model.predict(test_images_rgb, batch_size=8)
+test_features = model.predict(test_images_rgb, batch_size=opts['bath_size'])
 
 ap_k_list, hit_rate_k_list, mmv_k_list, acc_1_list, acc_3_list, acc_5_list = [], [], [], [], [], []
 for i in tqdm(range(len(test_features))):
