@@ -8,6 +8,8 @@ from tensorflow.keras.preprocessing.image import img_to_array, array_to_img
 from params import opts
 from scipy.ndimage import zoom
 import cv2
+import os
+from torchvision import transforms
 from PIL import Image
 if opts['framework'] == 'pytorch':
     from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
@@ -103,6 +105,23 @@ def load_and_preprocess_images(files, size, opts):
         model = MedCLIPModel(vision_cls=MedCLIPVisionModelViT)
         model.from_pretrained(input_dir='../pretrained_weights/medclip-vit/')
         model.cuda()
+    elif opts['pretrained_network_name'] == 'UNI':
+        import timm
+        device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+        local_dir = "../pretrained_weights/UNI/assets/ckpts/vit_large_patch16_224.dinov2.uni_mass100k/"
+        model = timm.create_model(
+            "vit_large_patch16_224", img_size=224, patch_size=16, init_values=1e-5, num_classes=0, dynamic_img_size=True
+        )
+        model.load_state_dict(torch.load(os.path.join(local_dir, "pytorch_model.bin"), map_location="cpu"), strict=True)
+        transform = transforms.Compose(
+            [
+                transforms.Resize(224),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+            ]
+        )
+        model.eval()
+        model.to(device)
 
 
     features = []
@@ -143,13 +162,20 @@ def load_and_preprocess_images(files, size, opts):
                 with torch.no_grad():
                     outputs = model(**inputs)
                     feature_whole_imgX.append(outputs['img_embeds'].squeeze().cpu().numpy())
+            elif opts['pretrained_network_name'] == 'UNI':
+                slice_rgb = slice_rgb.astype(np.uint8)
+                image_pil = Image.fromarray(slice_rgb)
+                image_pil_preprocess = torch.stack([transform(image_pil)]).to(device)
+                with torch.inference_mode():
+                    image_features = model(image_pil_preprocess)  # Extracted features (torch.Tensor) with shape [1,1024]
+                    feature_whole_imgX.append(image_features.squeeze().cpu().numpy())
 
         if opts['CNN']:
             feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=1).squeeze()
-        elif opts['pretrained_network_name'] == 'biomedclip':
+        elif opts['pretrained_network_name'] == 'biomedclip' or 'medclip' or 'UNI':
             feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)
-        elif opts['pretrained_network_name'] == 'medclip':
-            feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)
+        # elif opts['pretrained_network_name'] == 'medclip':
+        #     feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)
 
         features.append(feature_whole_imgX_concat)
 

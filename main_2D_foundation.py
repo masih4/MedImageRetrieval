@@ -13,7 +13,6 @@ from open_clip import create_model_from_pretrained, get_tokenizer
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 import os
-import torch
 from torchvision import transforms
 from utils import *
 
@@ -105,9 +104,6 @@ def extract_features(images_rgb, batch_size=1):
                 features.append(outputs['img_embeds'].cpu().numpy())
             elif opts['pretrained_network_name'] == 'UNI':
                 preprocessed_batch = torch.stack([transform(Image.fromarray(img)) for img in image_batch]).to(device)
-                # image = Image.open("1_2.jpg")
-                # image = transform(image).unsqueeze(
-                #    dim=0)  # Image (torch.Tensor) with shape [1, 3, 224, 224] following image resizing and normalization (ImageNet parameters)
                 with torch.inference_mode():
                     feature_emb = model(preprocessed_batch)  # Extracted features (torch.Tensor) with shape [1,1024]
                     features.append(feature_emb.cpu().numpy())
