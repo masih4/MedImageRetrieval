@@ -70,6 +70,13 @@ elif opts['pretrained_network_name'] == 'UNI':
     )
     model.eval()
     model.to(device)
+elif opts['pretrained_network_name'] == 'openclip':
+    import open_clip
+    model, _, preprocess = open_clip.create_model_and_transforms('ViT-g-14', pretrained='laion2b_s34b_b88k') #80.1%
+    model.eval()
+    tokenizer = open_clip.get_tokenizer('ViT-B-32')
+    model.to(device)
+
 
 
 # Resize and convert images
@@ -107,6 +114,13 @@ def extract_features(images_rgb, batch_size=1):
                 with torch.inference_mode():
                     feature_emb = model(preprocessed_batch)  # Extracted features (torch.Tensor) with shape [1,1024]
                     features.append(feature_emb.cpu().numpy())
+            elif opts['pretrained_network_name'] == 'openclip':
+                preprocessed_batch = torch.stack([preprocess(Image.fromarray(img)) for img in image_batch]).to(device)
+                with torch.no_grad(), torch.cuda.amp.autocast():
+                    image_features = model.encode_image(preprocessed_batch)
+                    #image_features /= image_features.norm(dim=-1, keepdim=True)
+                    features.append(image_features.cpu().numpy())
+
 
     return np.vstack(features)
 
@@ -165,3 +179,6 @@ print(f"mean_ap_k_list: {metrics['mean_ap_k']:.4f} \n"
       f"Runtime Train: {runtime_minutes_train:.2f} minutes \n"
       f"Runtime Test: {runtime_minutes_test:.2f} minutes \n"
       )
+
+
+an=1

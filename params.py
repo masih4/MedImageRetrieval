@@ -1,9 +1,9 @@
 # set all hyper parameters
 opts = {}
-opts['resize'] = 64
+opts['resize'] = 128
 opts['top_k'] = 5
-opts['data_path'] = '../dataset/64/synapsemnist3d_64.npz'
-opts['pretrained_network_name'] = 'UNI'
+opts['data_path'] = '../dataset/128/dermamnist_128.npz'
+opts['pretrained_network_name'] = 'openclip'
 # 'VGG19'
 # 'ResNet50'
 # 'DenseNet121'
@@ -11,6 +11,7 @@ opts['pretrained_network_name'] = 'UNI'
 # 'biomedclip'
 # 'medclip'
 # 'UNI'
+# 'openclip'
 
 opts['save_train_hard'] = '../dataset/64/synapsemnist3d_64/train/'
 opts['save_test_hard'] = '../dataset/64/synapsemnist3d_64/test/'
@@ -21,4 +22,4 @@ opts['framework'] = 'pytorch'
 # tf
 
 opts['CNN'] = False
-opts['bath_size'] = 256
+opts['bath_size'] = 32
