@@ -122,6 +122,14 @@ def load_and_preprocess_images(files, size, opts):
         )
         model.eval()
         model.to(device)
+    elif opts['pretrained_network_name'] == 'openclip':
+        device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+        import open_clip
+        model, _, preprocess = open_clip.create_model_and_transforms('ViT-g-14', pretrained='laion2b_s34b_b88k')  # 80.1%
+        model.eval()
+        tokenizer = open_clip.get_tokenizer('ViT-B-32')
+        model.to(device)
+
 
 
     features = []
@@ -169,13 +177,22 @@ def load_and_preprocess_images(files, size, opts):
                 with torch.inference_mode():
                     image_features = model(image_pil_preprocess)  # Extracted features (torch.Tensor) with shape [1,1024]
                     feature_whole_imgX.append(image_features.squeeze().cpu().numpy())
+            elif opts['pretrained_network_name'] == 'openclip':
+                slice_rgb = slice_rgb.astype(np.uint8)
+                image_pil = Image.fromarray(slice_rgb)
+                image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
+                with torch.no_grad(), torch.cuda.amp.autocast():
+                    image_features = model.encode_image(image_pil_preprocess)
+                    # image_features /= image_features.norm(dim=-1, keepdim=True)
+                    feature_whole_imgX.append(image_features.squeeze().cpu().numpy())
 
         if opts['CNN']:
             feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=1).squeeze()
-        elif opts['pretrained_network_name'] == 'biomedclip' or 'medclip' or 'UNI':
+        elif opts['pretrained_network_name'] == 'biomedclip' or 'medclip' or 'UNI' or 'openclip':
             feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)
         # elif opts['pretrained_network_name'] == 'medclip':
         #     feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)
+
 
         features.append(feature_whole_imgX_concat)
 
