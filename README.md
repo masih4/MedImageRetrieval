@@ -31,7 +31,8 @@ Cosine similarity index
 - For pre-trained models (CNN or foundation) for 3D datasets run `main_3D.py`
 - To create bar charts run `plot.py`
 
-## Used repositories:
+## Used repositories/sources:
+- For CNNs: https://www.tensorflow.org/api_docs/python/tf/keras/applications
 - For OpenCLIP: https://github.com/mlfoundations/open_clip
 - For UNI: https://github.com/mahmoodlab/UNI
 - For MedCLIP: https://github.com/RyanWangZf/MedCLIP
