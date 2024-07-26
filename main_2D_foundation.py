@@ -9,7 +9,6 @@ from tqdm import tqdm
 import time
 from urllib.request import urlopen
 from PIL import Image
-from open_clip import create_model_from_pretrained, get_tokenizer
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 import os
@@ -71,12 +70,17 @@ elif opts['pretrained_network_name'] == 'UNI':
     model.eval()
     model.to(device)
 elif opts['pretrained_network_name'] == 'openclip':
+    from open_clip import create_model_from_pretrained, get_tokenizer
     import open_clip
     model, _, preprocess = open_clip.create_model_and_transforms('ViT-g-14', pretrained='laion2b_s34b_b88k') #80.1%
     model.eval()
     tokenizer = open_clip.get_tokenizer('ViT-B-32')
     model.to(device)
-
+elif opts['pretrained_network_name'] == 'conch':
+    from conch.open_clip_custom import create_model_from_pretrained
+    model, preprocess = create_model_from_pretrained('conch_ViT-B-16', "../pretrained_weights/CONCH/pytorch_model.bin")
+    model.eval()
+    model.to(device)
 
 
 # Resize and convert images
@@ -120,7 +124,11 @@ def extract_features(images_rgb, batch_size=1):
                     image_features = model.encode_image(preprocessed_batch)
                     #image_features /= image_features.norm(dim=-1, keepdim=True)
                     features.append(image_features.cpu().numpy())
-
+            elif opts['pretrained_network_name'] == 'conch':
+                preprocessed_batch = torch.stack([preprocess(Image.fromarray(img)) for img in image_batch]).to(device)
+                with torch.inference_mode():
+                    image_features = model.encode_image(preprocessed_batch, proj_contrast=False, normalize=True)
+                    features.append(image_features.cpu().numpy())
 
     return np.vstack(features)
 
@@ -179,6 +187,3 @@ print(f"mean_ap_k_list: {metrics['mean_ap_k']:.4f} \n"
       f"Runtime Train: {runtime_minutes_train:.2f} minutes \n"
       f"Runtime Test: {runtime_minutes_test:.2f} minutes \n"
       )
-
-
-an=1
