@@ -129,6 +129,12 @@ def load_and_preprocess_images(files, size, opts):
         model.eval()
         tokenizer = open_clip.get_tokenizer('ViT-B-32')
         model.to(device)
+    elif opts['pretrained_network_name'] == 'conch':
+        from conch.open_clip_custom import create_model_from_pretrained
+        device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+        model, preprocess = create_model_from_pretrained('conch_ViT-B-16', "../pretrained_weights/CONCH/pytorch_model.bin")
+        model.eval()
+        model.to(device)
 
 
 
@@ -185,10 +191,20 @@ def load_and_preprocess_images(files, size, opts):
                     image_features = model.encode_image(image_pil_preprocess)
                     # image_features /= image_features.norm(dim=-1, keepdim=True)
                     feature_whole_imgX.append(image_features.squeeze().cpu().numpy())
+            elif opts['pretrained_network_name'] == 'conch':
+                slice_rgb = slice_rgb.astype(np.uint8)
+                image_pil = Image.fromarray(slice_rgb)
+                image_pil_preprocess = torch.stack([preprocess(image_pil)]).to(device)
+                with torch.inference_mode():
+                    image_features = model.encode_image(image_pil_preprocess, proj_contrast=False, normalize=True)
+                    feature_whole_imgX.append(image_features.squeeze().cpu().numpy())
+
+
+
 
         if opts['CNN']:
             feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=1).squeeze()
-        elif opts['pretrained_network_name'] == 'biomedclip' or 'medclip' or 'UNI' or 'openclip':
+        elif not opts['CNN']:
             feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)
         # elif opts['pretrained_network_name'] == 'medclip':
         #     feature_whole_imgX_concat = np.concatenate(feature_whole_imgX, axis=0)

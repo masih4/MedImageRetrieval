@@ -78,6 +78,11 @@ def process_and_extract_features(files, labels, opts, batch_size=100):
         model.eval()
         tokenizer = open_clip.get_tokenizer('ViT-B-32')
         model.to(device)
+    elif opts['pretrained_network_name'] == 'conch':
+        from conch.open_clip_custom import create_model_from_pretrained
+        model, preprocess = create_model_from_pretrained('conch_ViT-B-16',"../pretrained_weights/CONCH/pytorch_model.bin")
+        model.eval()
+        model.to(device)
 
 
     features = []
@@ -119,6 +124,11 @@ def process_and_extract_features(files, labels, opts, batch_size=100):
             with torch.no_grad(), torch.cuda.amp.autocast():
                 image_features = model.encode_image(preprocessed_batch)
                 # image_features /= image_features.norm(dim=-1, keepdim=True)
+                features.extend(image_features.cpu().numpy())
+        elif opts['pretrained_network_name'] == 'conch':
+            preprocessed_batch = torch.stack([preprocess(Image.fromarray(img)) for img in batch_images]).to(device)
+            with torch.inference_mode():
+                image_features = model.encode_image(preprocessed_batch, proj_contrast=False, normalize=True)
                 features.extend(image_features.cpu().numpy())
 
     return features
