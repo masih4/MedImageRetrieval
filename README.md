@@ -10,7 +10,7 @@
 - DenseNet121
 - EfficientNetV2M
 - OpenCLIP
-- UNI
+- UNI (aslo tested with CONCH and partially with VIRCHOW)
 - MedCLIP
 - BioMedClip
 
@@ -29,7 +29,7 @@ Cosine similarity index
 - For pre-trained CNNs for 2D datasets run `main_2D_CNN.py`
 - For pre-trained CNNs for 2D datasets (if your memory is limited to load the entire data) run `main_2D_CNN_memory_safe`
 - For pre-trained foundation models for 2D datasets run `main_2D_foundation.py`
-- For pre-trained BioMedCLip for 2D datasets (if your memory is limited to load the entire data) run `main_2D_foundation_memory_safe `
+- For pre-trained foundation models for 2D datasets (if your memory is limited to load the entire data) run `main_2D_foundation_memory_safe `
 - For pre-trained models (CNN or foundation) for 3D datasets run `main_3D.py`
 - To create bar charts run `plot.py`
 
