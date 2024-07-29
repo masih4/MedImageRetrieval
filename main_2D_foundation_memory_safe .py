@@ -9,7 +9,6 @@ from tqdm import tqdm
 import time
 from urllib.request import urlopen
 from PIL import Image
-from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
 import torch
 from natsort import natsorted
 import glob
@@ -38,6 +37,7 @@ test_files = natsorted(glob.glob(os.path.join(opts['save_test_hard'], file_patte
 
 def process_and_extract_features(files, labels, opts, batch_size=100):
     if opts['pretrained_network_name'] == 'biomedclip':
+        from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
         model, preprocess = create_model_from_pretrained(
             'hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
         tokenizer = get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
@@ -84,6 +84,15 @@ def process_and_extract_features(files, labels, opts, batch_size=100):
         model, preprocess = create_model_from_pretrained('conch_ViT-B-16',"../pretrained_weights/CONCH/pytorch_model.bin")
         model.eval()
         model.to(device)
+    if opts['pretrained_network_name'] == 'virchow':
+        import timm
+        from timm.data import resolve_data_config
+        from timm.data.transforms_factory import create_transform
+        from timm.layers import SwiGLUPacked
+        model = timm.create_model("hf-hub:paige-ai/Virchow", pretrained=True, mlp_layer=SwiGLUPacked, act_layer=torch.nn.SiLU)
+        model = model.eval()
+        model.to(device)
+        transforms = create_transform(**resolve_data_config(model.pretrained_cfg, model=model))
 
 
     features = []
@@ -131,6 +140,15 @@ def process_and_extract_features(files, labels, opts, batch_size=100):
             with torch.inference_mode():
                 image_features = model.encode_image(preprocessed_batch, proj_contrast=False, normalize=True)
                 features.extend(image_features.cpu().numpy())
+        if opts['pretrained_network_name'] == 'virchow':
+            preprocessed_batch = torch.stack([transforms(Image.fromarray(img)) for img in batch_images]).to(device)
+            with torch.inference_mode():
+                output = model(preprocessed_batch)  # size: 1 x 257 x 1280
+            class_token = output[:, 0]  # size: 1 x 1280
+            patch_tokens = output[:, 1:]  # size: 1 x 256 x 1280
+            embedding = torch.cat([class_token, patch_tokens.mean(1)], dim=-1)
+            features.extend(embedding.cpu().numpy())
+
 
     return features
 
