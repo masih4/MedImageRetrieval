@@ -21,9 +21,6 @@ from tensorflow.keras.models import Model
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array, array_to_img
 from utils import *
-if opts['framework'] == 'pytorch':
-    from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
-    import torch
 
 
 size = opts['resize']

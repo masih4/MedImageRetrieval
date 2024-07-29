@@ -24,6 +24,7 @@ file_pattern = '*.npy'
 
 # Use GPU if available
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+print('GPU vailablity:', torch.cuda.is_available())
 
 train_labels = data['train_labels']
 test_labels = data['test_labels']

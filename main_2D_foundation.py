@@ -17,6 +17,7 @@ from utils import *
 
 # Set device
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+print('GPU vailablity:', torch.cuda.is_available())
 
 # Load data
 size = opts['resize']
@@ -81,6 +82,19 @@ elif opts['pretrained_network_name'] == 'conch':
     model, preprocess = create_model_from_pretrained('conch_ViT-B-16', "../pretrained_weights/CONCH/pytorch_model.bin")
     model.eval()
     model.to(device)
+elif opts['pretrained_network_name'] == 'virchow':
+    # from huggingface_hub import login
+    # login()
+    import timm
+    from timm.data import resolve_data_config
+    from timm.data.transforms_factory import create_transform
+    from timm.layers import SwiGLUPacked
+    model = timm.create_model("hf-hub:paige-ai/Virchow", pretrained=True, mlp_layer=SwiGLUPacked, act_layer=torch.nn.SiLU)
+    model = model.eval()
+    model.to(device)
+    transforms = create_transform(**resolve_data_config(model.pretrained_cfg, model=model))
+
+
 
 
 # Resize and convert images
@@ -129,6 +143,15 @@ def extract_features(images_rgb, batch_size=1):
                 with torch.inference_mode():
                     image_features = model.encode_image(preprocessed_batch, proj_contrast=False, normalize=True)
                     features.append(image_features.cpu().numpy())
+            elif opts['pretrained_network_name'] == 'virchow':
+                preprocessed_batch = torch.stack([transforms(Image.fromarray(img)) for img in image_batch]).to(device)
+                with torch.inference_mode():
+                    output = model(preprocessed_batch)  # size: 1 x 257 x 1280
+                class_token = output[:, 0]  # size: 1 x 1280
+                patch_tokens = output[:, 1:]  # size: 1 x 256 x 1280
+                # concatenate class token and average pool of patch tokens
+                embedding = torch.cat([class_token, patch_tokens.mean(1)], dim=-1)
+                features.append(embedding .cpu().numpy())
 
     return np.vstack(features)
 

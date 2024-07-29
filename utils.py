@@ -11,9 +11,6 @@ import cv2
 import os
 from torchvision import transforms
 from PIL import Image
-if opts['framework'] == 'pytorch':
-    from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
-    import torch
 
 
 
@@ -88,6 +85,8 @@ def load_and_preprocess_images(files, size, opts):
         model = ResNet50(weights='imagenet', include_top=False, input_shape=(size, size, 3), pooling='avg')
 
     elif opts['pretrained_network_name'] == 'biomedclip':
+        from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
+        import torch
         model, preprocess = create_model_from_pretrained(
             'hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
         tokenizer = get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
