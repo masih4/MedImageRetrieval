@@ -26,7 +26,15 @@ Cosine similarity index
 
 ## Results:
 ### for different datasets based on models and input image size
-<img src="figures/BreastMNIST_ACC%401.png" alt="Example Image" width="400"/>
+<div style="display: flex; justify-content: space-around;">
+  <img src="figures/BreastMNIST_ACC@1.png" alt="Description of image 1" width="500"/>
+  <img src="figures/PneumoniaMNIST_ACC@1.png" alt="Description of image 2" width="500"/>
+</div>
+
+<div style="display: flex; justify-content: space-around;">
+  <img src="figures/BreastMNIST_ACC@1.png" alt="Description of image 1" width="300"/>
+  <img src="figures/PneumoniaMNIST_ACC@1.png" alt="Description of image 2" width="300"/>
+</div>
 
 
 ## How to run:
