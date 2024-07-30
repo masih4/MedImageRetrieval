@@ -10,7 +10,7 @@
 - DenseNet121
 - EfficientNetV2M
 - OpenCLIP
-- UNI (aslo tested with CONCH and partially with VIRCHOW)
+- UNI (aslo tested with CONCH and VIRCHOW)
 - MedCLIP
 - BioMedClip
 
@@ -19,11 +19,14 @@ Cosine similarity index
 
 ## Evaluation:
 - mAP@5
-- HitRate@5
 - MMV@5
 - ACC@1
 - ACC@3
-- ACC@5 ( = HitRate@5)
+- ACC@5
+
+## Results:
+### for differnt datasets based on models and input image size
+![Project Image](https://github.com/masih4/MedImageRetrieval/blob/master/figures/BreastMNIST_ACC%401.png)
 
 ## How to run:
 - For pre-trained CNNs for 2D datasets run `main_2D_CNN.py`
