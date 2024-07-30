@@ -134,6 +134,17 @@ def load_and_preprocess_images(files, size, opts):
         model, preprocess = create_model_from_pretrained('conch_ViT-B-16', "../pretrained_weights/CONCH/pytorch_model.bin")
         model.eval()
         model.to(device)
+    if opts['pretrained_network_name'] == 'virchow':
+        import torch
+        device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+        import timm
+        from timm.data import resolve_data_config
+        from timm.data.transforms_factory import create_transform
+        from timm.layers import SwiGLUPacked
+        model = timm.create_model("hf-hub:paige-ai/Virchow", pretrained=True, mlp_layer=SwiGLUPacked, act_layer=torch.nn.SiLU)
+        model = model.eval()
+        model.to(device)
+        transforms = create_transform(**resolve_data_config(model.pretrained_cfg, model=model))
 
 
 
@@ -197,7 +208,16 @@ def load_and_preprocess_images(files, size, opts):
                 with torch.inference_mode():
                     image_features = model.encode_image(image_pil_preprocess, proj_contrast=False, normalize=True)
                     feature_whole_imgX.append(image_features.squeeze().cpu().numpy())
-
+            if opts['pretrained_network_name'] == 'virchow':
+                slice_rgb = slice_rgb.astype(np.uint8)
+                image_pil = Image.fromarray(slice_rgb)
+                image_pil_preprocess = torch.stack([transforms(image_pil)]).to(device)
+                with torch.inference_mode():
+                    output = model(image_pil_preprocess)  # size: 1 x 257 x 1280
+                class_token = output[:, 0]  # size: 1 x 1280
+                patch_tokens = output[:, 1:]  # size: 1 x 256 x 1280
+                embedding = torch.cat([class_token, patch_tokens.mean(1)], dim=-1)
+                feature_whole_imgX.append(embedding.squeeze().cpu().numpy())
 
 
 
