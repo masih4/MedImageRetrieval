@@ -71,6 +71,7 @@ for key, df in dfs.items():
     plt.figure(figsize=(12, 8))
     ax = df.plot(kind='bar', ylim=(30, 100))
     # plt.title(f'ACC@1 for {key} using Different Models and Image Sizes')
+    plt.title(key)
     plt.xlabel('Model')
     plt.ylabel('ACC@1')
     plt.xticks(rotation=0, fontsize=6)  # Make x-axis font size smaller
