@@ -25,8 +25,9 @@ Cosine similarity index
 - ACC@5
 
 ## Results:
-### for differnt datasets based on models and input image size
-![Project Image](https://github.com/masih4/MedImageRetrieval/blob/master/figures/BreastMNIST_ACC%401.png)
+### for different datasets based on models and input image size
+<img src="figures/BreastMNIST_ACC%401.png" alt="Example Image" width="400"/>
+
 
 ## How to run:
 - For pre-trained CNNs for 2D datasets run `main_2D_CNN.py`
