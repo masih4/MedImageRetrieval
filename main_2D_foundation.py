@@ -161,6 +161,7 @@ def extract_features(images_rgb, batch_size=1):
 # Extract features
 start_time_train = time.time()
 train_features = extract_features(train_images_rgb, batch_size=opts['bath_size'])
+print(train_features.shape)
 end_time_train = time.time()
 
 start_time_test = time.time()

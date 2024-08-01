@@ -1,9 +1,9 @@
 # set all hyper parameters
 opts = {}
-opts['resize'] = 128
+opts['resize'] = 32
 opts['top_k'] = 5
-opts['data_path'] = '../dataset/128/pathmnist_128.npz'
-opts['pretrained_network_name'] = 'virchow'
+opts['data_path'] = '../dataset/28/breastmnist.npz'
+opts['pretrained_network_name'] = 'medclip'
 # 'VGG19'
 # 'ResNet50'
 # 'DenseNet121'
@@ -15,8 +15,8 @@ opts['pretrained_network_name'] = 'virchow'
 # 'conch'
 # 'virchow'
 
-opts['save_train_hard'] = '../dataset/128/pathmnist_128/train/'
-opts['save_test_hard'] = '../dataset/128/pathmnist_128/test/'
+opts['save_train_hard'] = '../dataset/224/bloodmnist_224/train/'
+opts['save_test_hard'] = '../dataset/224/bloodmnist_224/test/'
 opts['save_figures'] = '../results/figures/'
 
 
