@@ -9,7 +9,6 @@ from params import opts
 from scipy.ndimage import zoom
 import cv2
 import os
-from torchvision import transforms
 from PIL import Image
 
 
@@ -64,6 +63,7 @@ def metric_cal(test_features, train_features, test_labels, train_labels, top_n, 
 
 
 def load_and_preprocess_images(files, size, opts):
+    import torch
     if opts['pretrained_network_name'] == 'EfficientNetV2M':
         from tensorflow.keras.applications.efficientnet_v2 import EfficientNetV2M, preprocess_input
 
@@ -86,7 +86,6 @@ def load_and_preprocess_images(files, size, opts):
 
     elif opts['pretrained_network_name'] == 'biomedclip':
         from open_clip import create_model_from_pretrained, get_tokenizer  # works on open-clip-torch>=2.23.0, timm>=0.9.8
-        import torch
         model, preprocess = create_model_from_pretrained(
             'hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
         tokenizer = get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
@@ -106,6 +105,7 @@ def load_and_preprocess_images(files, size, opts):
         model.cuda()
     elif opts['pretrained_network_name'] == 'UNI':
         import timm
+        from torchvision import transforms
         device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
         local_dir = "../pretrained_weights/UNI/assets/ckpts/vit_large_patch16_224.dinov2.uni_mass100k/"
         model = timm.create_model(

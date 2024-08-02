@@ -20,6 +20,9 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array, array_to_img
+from sklearn.manifold import TSNE
+import umap
+from matplotlib.patches import Patch
 from utils import *
 
 
@@ -118,3 +121,45 @@ train_features_UMAP = umap_reducer.fit_transform(train_features)
 test_features_UMAP = umap_reducer.fit_transform(test_features)
 metric_cal(test_features_UMAP, train_features_UMAP, test_labels, train_labels, top_n, type='UMAP')
 print('###########################################################################')
+
+
+if opts['tsne']:
+    train_features = np.array(train_features)
+    # Reshape test_labels to be a 1D array for indexing purposes
+    train_labels = train_labels.flatten()
+
+    # Fit t-SNE model
+    tsne = TSNE(n_components=2, random_state=42, n_iter=1500)
+    train_features_red = tsne.fit_transform(train_features)
+
+
+    # Plotting t-SNE results with legend
+    plt.figure(figsize=(10, 8))
+
+    # Get unique labels
+    unique_labels = np.unique(train_labels)
+    colors = plt.cm.get_cmap('plasma', len(unique_labels))
+    distinct_colors = ['red', 'blue', 'green', 'purple', 'orange', 'black','cyan', 'magenta', 'yellow']
+
+    # Create scatter plot with a legend
+    for i, label in enumerate(unique_labels):
+        indices = train_labels == label
+        plt.scatter(train_features_red[indices, 0], train_features_red[indices, 1],
+                    color=distinct_colors[i], label=f'Class {label}', alpha=1, s=10)
+    # plt.legend(title='Classes', title_fontsize=25, fontsize=25, loc='upper right', framealpha=1)
+    handles = [Patch(color=distinct_colors[i]) for i in range(len(unique_labels))]
+    plt.legend(handles=handles, title='', title_fontsize=20, loc='upper right', fontsize=20,
+               framealpha=1, handleheight=0.5, handlelength=1)  # Create legend with colored rectangles
+
+    plt.title(opts['tsne_title'], fontsize=40)
+    plt.xlabel('t-SNE dimension 1', fontsize=40)
+    plt.ylabel('t-SNE dimension 2', fontsize=40)
+    # Remove x-axis and y-axis numbers
+    plt.xticks([])
+    plt.yticks([])
+
+
+    # Save the figure with high resolution
+    output_path = opts['save_figures_tsen'] + opts['tsne_title'] + '.png'
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', pad_inches=0)
+    print(f"t-SNE plot saved as {output_path}")
