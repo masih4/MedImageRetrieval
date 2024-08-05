@@ -61,10 +61,11 @@ More detailed results are available in ["Supplementary Materials"](https://githu
 
 ## Used repositories/sources:
 - For CNNs: https://www.tensorflow.org/api_docs/python/tf/keras/applications
-- For OpenCLIP: https://github.com/mlfoundations/open_clip
-- For UNI: https://github.com/mahmoodlab/UNI
 - For MedCLIP: https://github.com/RyanWangZf/MedCLIP
 - For BioMedCLIP: https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224/blob/main/biomed_clip_example.ipynb
+- For OpenCLIP: https://github.com/mlfoundations/open_clip
+- For CONCH: https://github.com/mahmoodlab/CONCH
+- For UNI: https://github.com/mahmoodlab/UNI
 
 ## Citation:
 Will be updated
