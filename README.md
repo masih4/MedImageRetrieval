@@ -9,10 +9,11 @@
 - ResNet50
 - DenseNet121
 - EfficientNetV2M
-- OpenCLIP
-- UNI (aslo tested with CONCH and VIRCHOW)
 - MedCLIP
 - BioMedClip
+- OpenCLIP
+- CONCH
+- UNI 
 
 ## Similarity:
 Cosine similarity index
