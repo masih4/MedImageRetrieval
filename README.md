@@ -91,10 +91,12 @@ amirreza.mahbod@dp-uni.ac.at
 - ResNet50: He, Kaiming, et al. "Deep residual learning for image recognition." Proceedings of the IEEE conference on computer vision and pattern recognition. 2016.
 - DenseNet121: Huang, Gao, et al. "Densely connected convolutional networks." Proceedings of the IEEE conference on computer vision and pattern recognition. 2017.
 - EfficientNetV2M: Tan, Mingxing, and Quoc Le. "Efficientnetv2: Smaller models and faster training." International conference on machine learning. PMLR, 2021.
-- OpenCLIP: Cherti, Mehdi, et al. "Reproducible scaling laws for contrastive language-image learning." Proceedings of the IEEE/CVF Conference on - Computer Vision and Pattern Recognition. 2023.
-- UNI: Chen, Richard J., et al. "Towards a general-purpose foundation model for computational pathology." Nature Medicine 30.3 (2024): 850-862.
 - MedCLIP: Wang, Zifeng, et al. "Medclip: Contrastive learning from unpaired medical images and text." arXiv preprint arXiv:2210.10163 (2022).
 - BioMedClip: Zhang, Sheng, et al. "BiomedCLIP: a multimodal biomedical foundation model pretrained from fifteen million scientific image-text pairs." arXiv preprint arXiv:2303.00915 (2023).
+- OpenCLIP: Cherti, Mehdi, et al. "Reproducible scaling laws for contrastive language-image learning." Proceedings of the IEEE/CVF Conference on - Computer Vision and Pattern Recognition. 2023.
+- CONCH: Lu, Ming Y., et al. "Visual language pretrained multiple instance zero-shot transfer for histopathology images." Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2023.
+- UNI: Chen, Richard J., et al. "Towards a general-purpose foundation model for computational pathology." Nature Medicine 30.3 (2024): 850-862.
+
 
 
 
