@@ -25,7 +25,7 @@ Cosine similarity index
 - ACC@5
 
 ## Results:
-More detailed results are available in ["Supplementary Materials"](https://github.com/masih4/MedImageRetrieval/blob/master/Supplementary Materials.pdf)
+More detailed results are available in ["Supplementary Materials"](https://github.com/masih4/MedImageRetrieval/blob/master/Supplementary%20Materials.pdf)
 
 ## Results based on ACC@1:
 ### for different datasets based on models and input image size
