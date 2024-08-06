@@ -22,7 +22,6 @@ test_images = data['test_images']
 test_labels = data['test_labels']
 
 
-
 print('number of classes:', len(np.unique(train_labels)))
 
 if opts['pretrained_network_name'] == 'EfficientNetV2M':
@@ -57,13 +56,15 @@ else:
     test_images_rgb = test_images_resized
 
 start_time_train = time.time()
-train_images_rgb = preprocess_input(train_images_rgb)
+if opts['pretrained_network_name'] != 'EfficientNetV2M':
+    train_images_rgb = preprocess_input(train_images_rgb)
 train_features = model.predict(train_images_rgb, batch_size=opts['bath_size'])
 print(train_features.shape)
 end_time_train = time.time()
 
 start_time_test = time.time()
-test_images_rgb = preprocess_input(test_images_rgb)
+if opts['pretrained_network_name'] != 'EfficientNetV2M':
+    test_images_rgb = preprocess_input(test_images_rgb)
 test_features = model.predict(test_images_rgb, batch_size=opts['bath_size'])
 
 ap_k_list, hit_rate_k_list, mmv_k_list, acc_1_list, acc_3_list, acc_5_list = [], [], [], [], [], []

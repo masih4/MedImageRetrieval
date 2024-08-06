@@ -36,6 +36,7 @@ print('number of classes:', len(np.unique(train_labels)))
 
 # Load model and preprocess function based on the specified network
 if opts['pretrained_network_name'] == 'biomedclip':
+    from open_clip import create_model_from_pretrained, get_tokenizer
     model, preprocess = create_model_from_pretrained('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
     tokenizer = get_tokenizer('hf-hub:microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224')
     labels = ['dummy text']
@@ -97,7 +98,7 @@ elif opts['pretrained_network_name'] == 'virchow':
     model.to(device)
     transforms = create_transform(**resolve_data_config(model.pretrained_cfg, model=model))
 
-
+print('total number of parameters:', sum(p.numel() for p in model.parameters()))
 
 
 # Resize and convert images
