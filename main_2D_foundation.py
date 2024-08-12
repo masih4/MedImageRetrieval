@@ -97,6 +97,15 @@ elif opts['pretrained_network_name'] == 'virchow':
     model = model.eval()
     model.to(device)
     transforms = create_transform(**resolve_data_config(model.pretrained_cfg, model=model))
+elif opts['pretrained_network_name'] == 'virchow2':
+    import timm
+    from timm.data import resolve_data_config
+    from timm.data.transforms_factory import create_transform
+    from timm.layers import SwiGLUPacked
+    model = timm.create_model("hf-hub:paige-ai/Virchow2", pretrained=True, mlp_layer=SwiGLUPacked,act_layer=torch.nn.SiLU)
+    model = model.eval()
+    model.to(device)
+    transforms = create_transform(**resolve_data_config(model.pretrained_cfg, model=model))
 
 print('total number of parameters:', sum(p.numel() for p in model.parameters()))
 
@@ -156,6 +165,15 @@ def extract_features(images_rgb, batch_size=1):
                 # concatenate class token and average pool of patch tokens
                 embedding = torch.cat([class_token, patch_tokens.mean(1)], dim=-1)
                 features.append(embedding .cpu().numpy())
+            elif opts['pretrained_network_name'] == 'virchow2':
+                preprocessed_batch = torch.stack([transforms(Image.fromarray(img)) for img in image_batch]).to(device)
+                with torch.inference_mode():
+                    output = model(preprocessed_batch)
+                class_token = output[:, 0]  # size: 1 x 1280
+                patch_tokens = output[:, 5:] # size: 1 x 256 x 1280
+                embedding = torch.cat([class_token, patch_tokens.mean(1)], dim=-1)
+                features.append(embedding.cpu().numpy())
+
 
     return np.vstack(features)
 
