@@ -26,10 +26,10 @@ Cosine similarity index
 - ACC@5
 
 ## Results:
-More detailed results are available in ["Supplementary Materials"](https://github.com/masih4/MedImageRetrieval/blob/master/Supplementary%20Materials.pdf)
-
-## Results based on ACC@1:
-### for different datasets based on models and input image size
+- Main results in the manuscript
+- More detailed results are available in ["Supplementary Materials"](https://github.com/masih4/MedImageRetrieval/blob/master/Supplementary%20Materials.pdf)
+- Selective results based on ACC@1:
+##### ACC@1 for different datasets based on the models and input image size
 <div style="display: flex; justify-content: space-around;">
   <img src="figures/BreastMNIST_ACC@1.png" alt="" width="400"/>
   <img src="figures/PneumoniaMNIST_ACC@1.png" alt="" width="400"/>
@@ -86,7 +86,7 @@ author = "Amirreza Mahbod and Nematollah Saeidi and Ramona Woitek"
 Amirreza Mahbod
 amirreza.mahbod@dp-uni.ac.at
 
-## References:
+## Main References:
 - VGG19: Simonyan, Karen, and Andrew Zisserman. "Very deep convolutional networks for large-scale image recognition." arXiv preprint arXiv:1409.1556 (2014).
 - ResNet50: He, Kaiming, et al. "Deep residual learning for image recognition." Proceedings of the IEEE conference on computer vision and pattern recognition. 2016.
 - DenseNet121: Huang, Gao, et al. "Densely connected convolutional networks." Proceedings of the IEEE conference on computer vision and pattern recognition. 2017.
