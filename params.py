@@ -2,8 +2,8 @@
 opts = {}
 opts['resize'] = 64
 opts['top_k'] = 5
-opts['data_path'] = '../dataset/64/adrenalmnist3d_64.npz'
-opts['pretrained_network_name'] = 'UNI'
+opts['data_path'] = '../dataset/64/pathmnist_64.npz'
+opts['pretrained_network_name'] = 'EfficientNetV2M'
 # 'VGG19'
 # 'ResNet50'
 # 'DenseNet121'
@@ -18,11 +18,11 @@ opts['pretrained_network_name'] = 'UNI'
 opts['tsne'] = False
 opts['tsne_title'] = 'BreastMNIST'
 
-opts['save_train_hard'] = '../dataset/64/adrenalmnist3d_64/train/'
-opts['save_test_hard'] = '../dataset/64/adrenalmnist3d_64/test/'
+opts['save_train_hard'] = '../dataset/64/pathmnist_64/train/'
+opts['save_test_hard'] = '../dataset/64/pathmnist_64/test/'
 opts['save_figures'] = '../results/figures/'
 opts['save_figures_tsen'] = '../results/figures/tsne/'
 
 
 opts['CNN'] = False
-opts['bath_size'] = 32
+opts['bath_size'] = 128
