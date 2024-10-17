@@ -24,9 +24,10 @@ file_pattern = '*.npy'
 
 
 ##############################################################################
-# run only if you do not have saved images on storage
+#run only if you do not have saved images on storage
 # train_images = data['train_images']
 # test_images = data['test_images']
+# val_images = data['val_images']
 # for train_idx in tqdm(range(len(train_images))):
 #     img_train = train_images[train_idx]
 #     np.save(opts['save_train_hard'] + str(train_idx) + '.npy', img_train)
@@ -34,6 +35,10 @@ file_pattern = '*.npy'
 # for test_idx in tqdm(range(len(test_images))):
 #     img_test = test_images[test_idx]
 #     np.save(opts['save_test_hard'] + str(test_idx) + '.npy', img_test)
+
+# for val_idx in tqdm(range(len(val_images))):
+#     img_val = val_images[val_idx]
+#     np.save(opts['save_val_hard'] + str(val_idx) + '.npy', img_val)
 ##############################################################################
 
 
