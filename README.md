@@ -2,6 +2,9 @@
 
 # Evaluating Pre-trained Convolutional Neural Networks and Foundation Models as Feature Extractors for Content-based Medical Image Retrieval
 
+## Preprint:
+https://www.arxiv.org/abs/2409.09430 
+
 ## Dataset: a subset of MedMNIST V2 
 ![Project Image](https://github.com/masih4/MedImageRetrieval/blob/master/Untitled.png)
 ## Feature extractors:
@@ -68,16 +71,12 @@ Cosine similarity index
 - For UNI: https://github.com/mahmoodlab/UNI
 
 ## Citation:
-Will be updated
 ```
-@article{,
-title = "Evaluating Pre-trained Convolutional Neural Networks and Foundation Models as Feature Extractors for Content-based Medical Image Retrieval",
-journal = "",
-volume = "",
-pages = "",
-year = "2024",
-doi = "",
-author = "Amirreza Mahbod and Nematollah Saeidi and Ramona Woitek"
+@article{mahbod2024evaluating,
+  title={Evaluating Pre-trained Convolutional Neural Networks and Foundation Models as Feature Extractors for Content-based Medical Image Retrieval},
+  author={Mahbod, Amirreza and Saeidi, Nematollah and Hatamikia, Sepideh and Woitek, Ramona},
+  journal={arXiv preprint arXiv:2409.09430},
+  year={2024}
 }
 ```
 
