@@ -14,7 +14,6 @@ import time
 from scipy.ndimage import zoom
 from sklearn.decomposition import PCA
 from PIL import Image
-import umap
 from sklearn.manifold import TSNE
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
