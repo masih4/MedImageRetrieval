@@ -44,6 +44,7 @@ file_pattern = '*.npy'
 
 train_labels = data['train_labels']
 test_labels = data['test_labels']
+val_labels = data['val_labels']
 
 if opts['pretrained_network_name'] == 'EfficientNetV2M':
     from tensorflow.keras.applications.efficientnet_v2 import EfficientNetV2M, preprocess_input
