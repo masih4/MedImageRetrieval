@@ -55,12 +55,13 @@ Cosine similarity index
 
 
 ## How to run:
-- For pre-trained CNNs for 2D datasets run `main_2D_CNN.py`
-- For pre-trained CNNs for 2D datasets (if your memory is limited to load the entire data) run `main_2D_CNN_memory_safe`
+- For Tensorflow implementation of pre-trained CNNs for 2D datasets run `main_2D_CNN.py`
+- For Tensorflow implementation of pre-trained CNNs for 2D datasets (if your memory is limited to load the entire data) run `main_2D_CNN_memory_safe`
 - For pre-trained foundation models for 2D datasets run `main_2D_foundation.py`
 - For pre-trained foundation models for 2D datasets (if your memory is limited to load the entire data) run `main_2D_foundation_memory_safe `
-- For pre-trained models (CNN or foundation) for 3D datasets run `main_3D.py`
+- For pre-trained models (CNN or foundation) for 3D datasets run `main_3D.py` (The CNN models in this script are based on Tensorflow implementation)
 - To create bar charts run `plot.py`
+- For the PyTorch implementation of pre-trained CNNs for 2D datasets, run `main_2D_CNN_memory_safe_pytorch.py`. For the PyTorch implementation of pre-trained CNNs for 3D datasets, run `main_3D_CNN_pytorch.py`.Please note that the reported results for CNN models in the paper are based on the TensorFlow implementation.
 
 ## Used repositories/sources:
 - For CNNs: https://www.tensorflow.org/api_docs/python/tf/keras/applications
