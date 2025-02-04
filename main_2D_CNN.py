@@ -66,6 +66,12 @@ start_time_test = time.time()
 if opts['pretrained_network_name'] != 'EfficientNetV2M':
     test_images_rgb = preprocess_input(test_images_rgb)
 test_features = model.predict(test_images_rgb, batch_size=opts['bath_size'])
+# end_time_test = time.time()
+#
+# runtime_seconds_test = end_time_test - start_time_test
+# runtime_minutes_test = runtime_seconds_test / 60
+# print(runtime_minutes_test)
+# start_time_test = time.time()
 
 ap_k_list, hit_rate_k_list, mmv_k_list, acc_1_list, acc_3_list, acc_5_list = [], [], [], [], [], []
 for i in tqdm(range(len(test_features))):
